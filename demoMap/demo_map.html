@@ -16,10 +16,22 @@
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
         <script src="js/iconLayer.js"></script>
+        <!--wind-->
         <script src="https://damp-reaches-87397.herokuapp.com/examples/leaflet/leaflet_canvas_layer.js" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js" defer></script>
+        <script src="https://damp-reaches-87397.herokuapp.com/dist/windable.min.js" defer></script>
 
     <!-- JS Custom -->
+
+        <script>
+              var d = new Date();
+          var curr_date = d.getDate()-1;
+          var curr_month = d.getMonth()+1;
+          var curr_year = d.getFullYear();
+          if(curr_date<10){curr_date='0'+curr_date};
+          if(curr_month<10){curr_month='0'+curr_month};
+          var time = (curr_year + "-" + curr_month + "-" + curr_date);
+        </script>
 
 
         <script>
@@ -37,11 +49,11 @@
           providers['2'] = {
               title: 'Satellite',
               icon: 'img/layers-satellite.png',
-              layer: L.tileLayer('http://{s}.sat.owm.io/sql/{z}/{x}/{y}?select=b1,b4,b3&from=modis&order=last&color=modis&appid=9de243494c0b295cca9337e1e96b00e2', {
+              layer: L.tileLayer('https://map1a.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/' + time + '/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg', {
                   maxZoom: 19,
-                  attribution: '&copy; <a href="http://owm.io">VANE</a>'
+                  attribution: '&copy; <a href="https://worldview.earthdata.nasa.gov">NASA Worldview</a>'
               })
-          };
+          }
         </script>
     </head>
     <body>    
@@ -81,6 +93,7 @@
         
     };
 
+    wind.addTo(map);
 
 
     L.control.layers(overlayMaps, null, {collapsed:false}).addTo(map);
