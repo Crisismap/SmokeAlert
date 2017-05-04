@@ -1,11 +1,11 @@
-# spacehack
-Models and data for Space Hack 2017 challenge
+Demo Fires Map
+================
 
-Requirements
- * georasters package for Python
- * requires sex with libgdal >= 2.0
+Uses Crisismap and Fires-map feeds, Leaflet and custom plugins. 
 
-## Amendments to `georasters` README:
- * `data.raster = data.raster[layer]` for multicolor GeoTIFF is required, otherwise multiple operations will be disabled. You can use any of the channels, or apply a function to merge them.
- * Don't forget to call `matplotlib.pyplot.show()` to show the map
- * Don't forget to import `numpy`
+Documentation is coming soon.
+
+Demos
+------
+  * [Fires map](https://crisismap.github.io/SmokeAlert/demoMap/fires-map/index.html) - demonstrates test data for fires in Siberia, Russia
+  * [Wind map](https://crisismap.github.io/SmokeAlert/demoMap/wind_test.htm) - demonstrates wind animation based on NOAA data
