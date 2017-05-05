@@ -8,9 +8,11 @@
     <script src="../../leaflet/leaflet-src.js"></script>
 
 	<script src="../build/leaflet-geomixer-dev.js?key=U92596WMIH"></script>
+    
     <script src="../build/iconLayer.js"></script>
     <link rel="stylesheet" href="../css/iconLayers.css" />
 
+    <link rel="stylesheet" href="../css/demo.css" />
 
 	<script src="fires/Fires.js"></script>
 
@@ -45,31 +47,7 @@
               })
           }
     </script>
-    <style>
-        html, body, #map {
-            height: 100%;
-            width: 100%;
-            margin: 0px;
-        }
-        #controls {
-            position: absolute;
-			left: 190px;
-			top: 11px;
-			z-index: 1000;
-			background-color: #ffffff;
-			border-radius: 5px;
-            box-shadow: 0 1px 7px rgba(0,0,0,0.65);
-        }
-        
-        #controls button {
-            border-radius: 5px;
-            
-        }
-        
-        #controls > div{
-            padding: 6px;
-        }
-    </style>
+
 	<title>Demo map Fires New</title>
 </head>
 
@@ -89,7 +67,7 @@
     var map = new L.Map('map', {
         layers: [],
         //crs: L.CRS.EPSG3395,
-        center: new L.LatLng(53.1, 43.1),
+        center: new L.LatLng(64.09, 89.29),
         attributionControl: false,
         zoomControl: false,
         zoom: 5
@@ -212,7 +190,7 @@
     }
     var clusterGeomLayer = L.gmx.createLayer(layerInfo1)
         .addTo(map);
-    LayersControl.addOverlay(clusterGeomLayer, layerInfo1.properties.title);
+    //LayersControl.addOverlay(clusterGeomLayer, layerInfo1.properties.title);
 
     L.gmx.loadLayers([
         {mapID: _params.mapName, layerID: _params.hotspotLayerName}
@@ -221,8 +199,8 @@
     ]).then(function(hotspotLayer, dailyLayer) {
         hotspotLayer.setDateInterval(ddt1, ddt2);
         dailyLayer.setDateInterval(ddt1, ddt2);
-        LayersControl.addOverlay(hotspotLayer, hotspotLayer._gmx.properties.title);
-        LayersControl.addOverlay(dailyLayer, dailyLayer._gmx.properties.title);
+        //LayersControl.addOverlay(hotspotLayer, hotspotLayer._gmx.properties.title);
+        //LayersControl.addOverlay(dailyLayer, dailyLayer._gmx.properties.title);
 
         var observerDailyClustersLayer = dailyLayer.addObserver({
             type: 'update',
@@ -293,9 +271,9 @@
         document.getElementById("next").onclick = function() {
             ddt1 = new Date(ddt1.getTime() + period);
             ddt2 = new Date(ddt2.getTime() + period);
-            hotspotLayer.setDateInterval(ddt1, ddt2);
+            //hotspotLayer.setDateInterval(ddt1, ddt2);
             dailyLayer.setDateInterval(ddt1, ddt2);
-            observerLayer.setDateInterval(ddt1, ddt2);
+            //observerLayer.setDateInterval(ddt1, ddt2);
             observerDailyClustersLayer.setDateInterval(ddt1, ddt2);
             updateInfo();
         }

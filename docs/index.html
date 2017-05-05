@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>SmogAlert</title>
+		<title>SmokeAlert intro</title>
 
 		<meta name="description" content="Prediction of Smoke Propagation: Bringing Global Awareness">
 		<meta name="author" content="SmokeAlert">
@@ -45,11 +45,11 @@
 
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
-				<section data-background-image="img/map-bg.jpg">
-					<h2>Prediction of Smoke Propagation: Bringing Global Awareness</h2>
+				<section data-background-image="img/slide1.png">
+					<h3 style="width:80%; margin:60px auto -60px auto">Prediction of Smoke Propagation: Bringing Global Awareness</h3>
 					<br>
 					<p>
-						<small><a href="https://2017.spaceappschallenge.org/challenges/warning-danger-ahead/and-you-can-help-fight-fires/teams/smokealert/project">SmokeAlert team</a></small>
+						<small><a href="https://2017.spaceappschallenge.org/challenges/warning-danger-ahead/and-you-can-help-fight-fires/teams/smokealert/project" target="_blank">SmokeAlert team</a></small>
 					</p>
 				</section>
 
@@ -72,15 +72,13 @@
 					</p>
 				</section>
 				
-				<section>
-					<img src="img/india_smoke_pic.png" />
-				</section>
+			
 
 				<section>
 					<h2>Our goals</h2>
 					<ul>
 						<li class="fragment">
-						Alerting immediate consumers: to help risk groups like children and old people, people suffering from pulmonary and cardiovascular diseases by sending preventive notification;
+						Alerting immediate consumers: to help risk groups like children and old people, people suffering from pulmonary and cardiovascular diseases by sending preventive notifications;
 						</li>
 						<li class="fragment">
 						Influence via governmental structures: send data to emergency services to react faster and reduce costs of eliminating consequences;
@@ -161,51 +159,22 @@
 -->
 
 				<section>
-					<h2>Our approach</h2>
 					<section>
-						<h3>Data aggregation</h3>
-						<ul>
-							<li>remote sensing data (satellites and aerial imagery);</li>
-							<li>social and economic data.</li>
-						</ul>
+						<h2>Our approach - technical concept</h2>
+						<a href="#" class="navigate-down">
+								<img width="178" height="238" alt="Down arrow" src="img/arrow.png">
+						</a>
 					</section>
 					<section>
-						<h4 style="text-align: left; vertical-align: top">Data aggregation</h4>
-						<h3>Data processing</h3>
-						<ul>
-							<li>hotspots from fires detection;</li>
-							<li>hotspots clusters -> area -> sum. fire radiative power;</li>
-							<li><b>smoke detection.</b></li>
-						</ul>	
-					</section>
-					<section>
-						<h4 style="text-align: left; vertical-align: top">Data aggregation</h4>
-						<h4 style="text-align: left; vertical-align: top">Data processing</h4>
-						<h3>Prediction models</h3>
-						<ul>
-							<li>weather model → wind forecast;</li>
-							<li>propagation forecast: 24hours (3h step);</li>
-							<li>population density maps.</li>
-						</ul>
-					</section>
-					<section>
-						<h4 style="text-align: left; vertical-align: top">Data aggregation</h4>
-						<h4 style="text-align: left; vertical-align: top">Data processing</h4>
-						<h4 style="text-align: left; vertical-align: top">Prediction models</h4>
-						<h3>Consumer services</h3>
-						<ul>
-							<li>alert and notification services;</li>
-							<li>API;</li>
-							<li><a href="http://fires-map.com">fires-map.com</a></li>
-						</ul>	
-					</section>
+						<img src="img/smokeAlert_scheme.png" />
+					</section>	
 				</section>
 
 				<section data-background-image="img/map-bg.jpg">
-					<h2>Test map for Siberia</h2>
+					<h2>Test map for Siberia - July 2016</h2>
 					<br>
 					<p>
-						<iframe src="https://winnie.kosmosnimki.ru/viewer.html?config=I98IP" width="100%" height="550"></iframe>
+						<iframe src="https://crisismap.github.io/SmokeAlert/demoMap/fires-map/index.html" width="100%" height="550"></iframe>
 					</p>
 				</section>
 
@@ -215,19 +184,21 @@
 						<li>
 						<b>Satellite Data</b> (Terra, Aqua and NPP satellites):<br/>
 						<i>Wildfires data</i> (Visible and IR images) - current and historical data;<br/>
-						<i>Smoke and aerosols</i> - current and historical data from MODIS instrument (3.67);<br/>
+						<i>Smoke and aerosols</i> - current and historical data from MODIS and OMPS instruments;<br/>
 						<i>Weather Model</i> - Global open models (GFS, CMC etc.) for wind forecast;<br/>
 						</li>
 						<li>
-						<b>Social and economic data</b> (e.g. population density map)
+						<b>Social and economic data</b> (e.g. population density maps)
 						</li>
 						<li>
-						<b>Data Verification and Validation</b> (News from media and social media and Air pollution data from ground stations)
+						<b>Data Verification and Validation</b> (News from media and social media, Air pollution data from ground stations)
 						</li>
 						</ul>
 				</section>
 
 				<section data-background-image="img/sample_model_output.jpg">
+					<h3 style="color:#999">Smoke plumes over Siberia, Russia in july 2016</h3>
+					<small style="color:#fff">test data and visualization - SmokeAlert</small>
 				</section>
 
 				<section>
@@ -240,13 +211,16 @@
 					<div>
 					During the hackathon we have:
 						<ul>
-							<li>Identified and verified the need for the service described
-							<li>Discovered data sources for the model and implemented data fetcher
-							<li>Built the heuristic to identify smoke 
+							<li>Meat each other!</li>
+							<li>Identified and verified the need for the service described</li>
+							<li>Discovered data sources for the model and implemented data fetcher</li>
+							<li>Choose the Siberian last year fires in Russia as a pilot region for model training</li>
+							<li>Built the heuristic to classify smoke</li>
 							<li>Developed requirements for a spaciotemporal prediction model
-							<div style="font-size: 70%">(Including density-based clustering for datapoints, autoregression and convolutions for matrix data processing)</div>
-							<li>Developed mockup for a mobile layout of the client
-							<li>Prepared visual demo
+							<div style="font-size: 70%">(+ density-based clustering for hotspots)</div></li>
+							<li>Developed a prototype of web map with data layers and alerts</li>
+							<li>Developed mockup of mobile prototype</li>
+							<li>Prepared visual demo</li>
 						</ul>
 					</div>
 				</section>
@@ -254,12 +228,11 @@
 				<section>
 					<h2>Our team</h2>
 					<ul>
-						<li><b>Georgy Potapov</b>, creator of fires-map.com, Geoalert
-						<li><b>Dmitry Pogodin</b>, backend-developer
-						<li><b>Maria Kolos</b>, UX / UI developer
-						<li><b>Oleg Urzhumtsev</b>, Skoltech, Cisco, data scientist
-						<li><b>Rodion Mamin</b>, product manager, Space enthusiast
-						<li><b>Rustam Akhtyamov</b>, Skoltech Space Center, PhD-student
+						<li><b>Georgy Potapov</b>, creator of fires-map.com, Crisismap</li>
+						<li><b>Dmitry Pogodin</b>, backend-developer</li>
+						<li><b>Maria Kolos</b>, UX / UI developer</li>
+						<li><b>Oleg Urzhumtsev</b>, data scientist, Skoltech, Cisco</li>
+						<li><b>Rustam Akhtyamov</b>, PhD-student, Skoltech Space Center</li>
 					</ul>
 				</section>
 			</div>

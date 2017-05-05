@@ -1,6 +1,26 @@
-body {
-	margin:0;
-}
+html, body, #map {
+            height: 100%;
+            width: 100%;
+            margin: 0px;
+        }
+#controls {
+            position: absolute;
+			left: 190px;
+			top: 11px;
+			z-index: 1000;
+			background-color: #ffffff;
+			border-radius: 5px;
+            box-shadow: 0 1px 7px rgba(0,0,0,0.65);
+        }
+        
+#controls button {
+            border-radius: 5px;
+            
+        }
+        
+#controls > div{
+            padding: 6px;
+        }
 
 .global_map {
 	position: absolute;
@@ -15,4 +35,9 @@ body {
 
 }
 
-
+.leaflet-control-layers-overlays {
+	padding: 12px;
+}
+.leaflet-control-layers-separator {
+	margin:0;
+}
