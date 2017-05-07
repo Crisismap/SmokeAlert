@@ -271,6 +271,14 @@
 
 
         document.getElementById("prev").onclick = function() {
+
+            var curr_date = ddt1.getDate();
+            var curr_month = ddt1.getMonth()+1;
+            var curr_year = ddt1.getFullYear();
+            if(curr_date<10){curr_date='0'+curr_date};
+            if(curr_month<10){curr_month='0'+curr_month};
+            var time = (curr_year + "-" + curr_month + "-" + curr_date);
+
             ddt1 = new Date(ddt1.getTime() - period);
             ddt2 = new Date(ddt2.getTime() - period);
             hotspotLayer.setDateInterval(ddt1, ddt2);
@@ -282,6 +290,14 @@
         }
         
         document.getElementById("next").onclick = function() {
+
+            var curr_date = ddt1.getDate();
+            var curr_month = ddt1.getMonth()+1;
+            var curr_year = ddt1.getFullYear();
+            if(curr_date<10){curr_date='0'+curr_date};
+            if(curr_month<10){curr_month='0'+curr_month};
+            var time = (curr_year + "-" + curr_month + "-" + curr_date);
+            
             ddt1 = new Date(ddt1.getTime() + period);
             ddt2 = new Date(ddt2.getTime() + period);
             hotspotLayer.setDateInterval(ddt1, ddt2);
