@@ -40,7 +40,7 @@
             var providers = {};
 
             providers['1'] = {
-              title: 'Satellite',
+              title: 'NPP Satellite',
               icon: '../img/layers-satellite.png',
               layer: L.tileLayer('https://map1a.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/' + time + '/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg', {
                   maxZoom: 19,
@@ -81,7 +81,7 @@
         layers: [],
         //crs: L.CRS.EPSG3395,
         center: new L.LatLng(64.09, 89.29),
-        attributionControl: false,
+        attributionControl: true,
         zoomControl: false,
         zoom: 5
     });
@@ -297,7 +297,7 @@
             if(curr_date<10){curr_date='0'+curr_date};
             if(curr_month<10){curr_month='0'+curr_month};
             var time = (curr_year + "-" + curr_month + "-" + curr_date);
-            
+
             ddt1 = new Date(ddt1.getTime() + period);
             ddt2 = new Date(ddt2.getTime() + period);
             hotspotLayer.setDateInterval(ddt1, ddt2);
