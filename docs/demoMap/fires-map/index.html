@@ -87,16 +87,18 @@
     });
 
 
-    var wind = L.tileLayer( "http://{s}.maps.owm.io:8099/5905a6d85dd7350001431cf2/{z}/{x}/{y}?hash=6b2ac856186c78ee47747cfff10482b4");
+    var Wind = L.tileLayer( "http://{s}.maps.owm.io:8099/5905a6d85dd7350001431cf2/{z}/{x}/{y}?hash=6b2ac856186c78ee47747cfff10482b4");
 
+    var Population = L.tileLayer.wms('https://geoservice.dlr.de/eoc/land/wms?', {
+    layers: 'GUF28_DLR_v1_Mosaic',
+    transparent: true,
+    format: 'image/png',
+    styles: 'guf_8bit',
+    attribution: '&copy; DLR GUF'}).addTo(map);
 
-
-    wind.addTo(map);
+    Wind.addTo(map);
     
-    var LayersControl = L.control.layers({
-        wind
-    }, {
-    }, {collapsed: false}).addTo(map);
+    var LayersControl = L.control.layers({Wind}, {Population}, {collapsed: false}).addTo(map);
     
     
         var updateInfo = function() {
@@ -112,11 +114,12 @@
     var _params = {
         minGeomZoom: 8,
         minHotspotZoom: 11,
-        hotspotLayerName: 'C13B4D9706F7491EBC6DC70DFFA988C0',
-        dailyLayerName: '3E88643A8AC94AFAB4FD44941220B1CE',
-        hotspotTimeAttr: 'Timestamp',
+        hotspotLayerName: 'F2840D287CD943C4B1122882C5B92565',
+        dailyLayerName: 'E58063D97D534BB4BBDFF07FE5CB17F2',
+        hotspotTimeAttr: 'DateTime',
         hotspotIDAttr: 'SpotID',
-        clusterTimeAttr: 'ClusterDate',
+        clusterTimeAttr: 'DateTime',
+        totalPower: 'TotalPower',
         mapName: 'NDFYK'
     };
     buildModisPixelDimensionsTable();
