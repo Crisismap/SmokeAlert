@@ -18,11 +18,11 @@
 
     <script>
 
-        var startDate = new Date('2016/07/25');
+        var startDate = new Date;
         var oneDay = 1000*60*60*24,
         period = oneDay * 1,
         now = startDate.getTime(),
-        ddt1 = new Date( now - now % oneDay - oneDay), //beginning of the previous UTC day
+        ddt1 = new Date( now - now % oneDay), //beginning of the previous UTC day
         ddt2 = new Date(ddt1.getTime() + period); //beginning of the current UTC day
 
         //var d = new Date();
@@ -35,20 +35,20 @@
 
     </script>
 
-    <script>
+    <script>//2a99c97edae3fe4c3f8b227d6329708c
 
             var providers = {};
 
-            providers['1'] = {
+            providers['2'] = {
               title: 'NPP Satellite',
               icon: '../img/layers-satellite.png',
-              layer: L.tileLayer('https://map1a.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/' + time + '/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg', {
-                  maxZoom: 19,
-                  attribution: '&copy; <a href="https://worldview.earthdata.nasa.gov">NASA Worldview</a>'
+              layer: L.tileLayer('http://{s}.sat.owm.io/sql/{z}/{x}/{y}?select=b1,b4,b3&from=modis&order=last&color=modis&APPID=2a99c97edae3fe4c3f8b227d6329708c&where=day:' + time, {
+                  maxZoom: 13,
+                  attribution: '&copy; <a href="http://owm.io">VANE Openweathermap</a>'
               })
           };
 
-            providers['2'] = {
+            providers['1'] = {
               title: 'Map',
               icon: '../img/layers-vector.png',
               layer: L.tileLayer('http://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
@@ -66,13 +66,13 @@
 
 <body>
 	<div id="map"></div>
-    <div id="controls" class="controls2">
-        <div>
+	<div id="controls" class="controls2">
+		<div>
             <button id="prev">&lt;&lt;</button>
                 <span id="timeInfo"></span> - <span id="timeInfo2"></span>
             <button id="next">&gt;&gt;</button>
         </div>
-    </div>
+	</div>
 
 
 
@@ -82,12 +82,13 @@
         //crs: L.CRS.EPSG3395,
         center: new L.LatLng(64.09, 89.29),
         attributionControl: true,
-        zoomControl: false,
+        zoomControl: true,
         zoom: 5
     });
 
+    var Borders = L.tileLayer("http://{s}.maps.owm.io:8099/58c8f11e73e9ac0001bbf8ac/{z}/{x}/{y}?hash=a3959fae3279f3cdafe12ebf0532c449");
 
-    var Wind = L.tileLayer( "http://{s}.maps.owm.io:8099/5905a6d85dd7350001431cf2/{z}/{x}/{y}?hash=6b2ac856186c78ee47747cfff10482b4");
+    var Wind = L.tileLayer( "http://{s}.maps.owm.io/map/wind_new/{z}/{x}/{y}?appid=b1b15e88fa797225412429c1c50c122a1");
 
     var Population = L.tileLayer.wms('https://geoservice.dlr.de/eoc/land/wms?', {
     layers: 'GUF28_DLR_v1_Mosaic',
@@ -96,7 +97,9 @@
     styles: 'guf_8bit',
     attribution: '&copy; DLR GUF'}).addTo(map);
 
+
     Wind.addTo(map);
+
     
     var LayersControl = L.control.layers({Wind}, {Population}, {collapsed: false}).addTo(map);
     
@@ -104,9 +107,9 @@
         var updateInfo = function() {
 			var zz = function(x) { return x < 10 ? "0" + x : x}
             document.getElementById('timeInfo').innerHTML = 
-                zz(ddt1.getUTCDate()) + '.' + zz(ddt1.getUTCMonth() + 1) + '.' + zz(ddt1.getUTCFullYear());
+                zz(ddt1.getUTCFullYear()) + '.' + zz(ddt1.getUTCMonth() + 1) + '.' + zz(ddt1.getUTCDate());
             document.getElementById('timeInfo2').innerHTML = 
-                zz(ddt2.getUTCDate()) + '.' + zz(ddt2.getUTCMonth() + 1) + '.' + zz(ddt2.getUTCFullYear());
+                zz(ddt2.getUTCFullYear()) + '.' + zz(ddt2.getUTCMonth() + 1) + '.' + zz(ddt2.getUTCDate());
 		}
         
         updateInfo();
