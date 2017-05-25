@@ -80,10 +80,10 @@
     var map = new L.Map('map', {
         layers: [],
         //crs: L.CRS.EPSG3395,
-        center: new L.LatLng(64.09, 89.29),
+        center: new L.LatLng(52.09, 59.29),
         attributionControl: true,
         zoomControl: true,
-        zoom: 5
+        zoom: 4
     });
 
     var Borders = L.tileLayer("http://{s}.maps.owm.io:8099/58c8f11e73e9ac0001bbf8ac/{z}/{x}/{y}?hash=a3959fae3279f3cdafe12ebf0532c449");
@@ -292,7 +292,7 @@
             observerLayer.setDateInterval(ddt1, ddt2);
             observerDailyClustersLayer.setDateInterval(ddt1, ddt2);
             updateInfo();
-            providers['1'].layer.setUrl('https://map1a.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/' + time + '/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg');
+            providers['2'].layer.setUrl('http://{s}.sat.owm.io/sql/{z}/{x}/{y}?select=b1,b4,b3&from=modis&order=last&color=modis&APPID=2a99c97edae3fe4c3f8b227d6329708c&where=day:' + time);
         }
         
         document.getElementById("next").onclick = function() {
@@ -311,7 +311,7 @@
             observerLayer.setDateInterval(ddt1, ddt2);
             observerDailyClustersLayer.setDateInterval(ddt1, ddt2);
             updateInfo();
-            providers['1'].layer.setUrl('https://map1a.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/' + time + '/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg');
+            providers['2'].layer.setUrl('http://{s}.sat.owm.io/sql/{z}/{x}/{y}?select=b1,b4,b3&from=modis&order=last&color=modis&APPID=2a99c97edae3fe4c3f8b227d6329708c&where=day:' + time);
         }
     });
 
