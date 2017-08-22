@@ -28,7 +28,7 @@
         ddt2 = new Date(ddt1.getTime() + period); //beginning of the current UTC day
 
         //var d = new Date();
-        var curr_date = ddt1.getDate();
+        var curr_date = ddt1.getDate()-1;
         var curr_month = ddt1.getMonth()+1;
         var curr_year = ddt1.getFullYear();
         if(curr_date<10){curr_date='0'+curr_date};
@@ -48,9 +48,9 @@
                   maxZoom: 13,
                   attribution: '&copy; <a href="http://owm.io">VANE Openweathermap</a>'
               })*/
-              layer: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+              layer: L.tileLayer('http://maps.kosmosnimki.ru/TileService.ashx?Request=gettile&LayerName=04C9E7CE82C34172910ACDBF8F1DF49A&apikey=U96GP973UH&crs=epsg:3857&z={z}&x={x}&y={y} ', {
                   maxZoom: 13,
-                  attribution: '&copy; <a href="http://arcgis.com">ESRI</a>'
+                  attribution: '&copy; <a href="http://kosmosnimki.ru">SCANEX</a>'
               })
           };
 
@@ -86,14 +86,14 @@
     var map = new L.Map('map', {
         layers: [],
         //crs: L.CRS.EPSG3395,
-        center: new L.LatLng(52.09, 59.29),
+        center: new L.LatLng(53.08, 106.12),
         attributionControl: true,
         zoomControl: true,
-        scrollWheelZoom: false,
+        scrollWheelZoom: true,
         zoom: 4
     }); 
     
-    var MODIS = L.tileLayer('http://{s}.sat.owm.io/sql/{z}/{x}/{y}?select=b1,b4,b3&from=modis&order=last&color=modis&APPID=2a99c97edae3fe4c3f8b227d6329708c&where=day:' + time, {
+    var MODIS = L.tileLayer('https://map1a.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_CorrectedReflectance_TrueColor/default/' + time + '/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg', {
                   maxZoom: 13,
                   attribution: '&copy; <a href="http://owm.io">Openweathermap</a>'
               });  
@@ -105,16 +105,11 @@
     styles: 'guf_8bit',
     attribution: '&copy; DLR GUF'});
     
-    var Borders = L.tileLayer("http://{s}.maps.owm.io:8099/58c8f11e73e9ac0001bbf8ac/{z}/{x}/{y}?hash=a3959fae3279f3cdafe12ebf0532c449");
-
-    var Labels = L.tileLayer('http://tile.stamen.com/toner-labels/{z}/{x}/{y}.png ', {
-                  maxZoom: 18
-              });
+    var Borders = L.tileLayer("http://{s}.maps.owm.io:8099/599c2397ca91e20001b13a68/{z}/{x}/{y}?hash=834dcebedb1e32738226439252599ac6");
 
  
 
 
-    Borders.addTo(map);
 
 
     
@@ -134,11 +129,11 @@
     var _params = {
         minGeomZoom: 8,
         minHotspotZoom: 11,
-        hotspotLayerName: 'C13B4D9706F7491EBC6DC70DFFA988C0',
-        dailyLayerName: '3E88643A8AC94AFAB4FD44941220B1CE',
-        hotspotTimeAttr: 'Timestamp',
+        hotspotLayerName: 'F2840D287CD943C4B1122882C5B92565',
+        dailyLayerName: 'E58063D97D534BB4BBDFF07FE5CB17F2',
+        hotspotTimeAttr: 'DateTime',
         hotspotIDAttr: 'SpotID',
-        clusterTimeAttr: 'ClusterDate',
+        clusterTimeAttr: 'DateTime',
         totalPower: 'TotalPower',
         mapName: 'NDFYK'
     };
@@ -195,10 +190,11 @@
         }
     };
     LayersControl.addOverlay(MODIS, "MODIS");
-    LayersControl.addOverlay(Wind, "Wind");
-    LayersControl.addOverlay(Population, "Population");
+    //LayersControl.addOverlay(Wind, "Wind");
+    //LayersControl.addOverlay(Population, "Population");
     LayersControl.addOverlay(Borders, "Borders");
-    LayersControl.addOverlay(Labels, "Labels");
+
+    Borders.addTo(map);
 
     var clusterLayer = L.gmx.createLayer(layerInfo);
     LayersControl.addOverlay(clusterLayer, layerInfo.properties.title);
@@ -312,12 +308,12 @@
             observerLayer.setDateInterval(ddt1, ddt2);
             observerDailyClustersLayer.setDateInterval(ddt1, ddt2);
             updateInfo();
-            MODIS.setUrl('http://{s}.sat.owm.io/sql/{z}/{x}/{y}?select=b1,b4,b3&from=modis&order=last&color=modis&APPID=2a99c97edae3fe4c3f8b227d6329708c&where=day:' + time);
+            MODIS.setUrl('https://map1a.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_CorrectedReflectance_TrueColor/default/' + time + '/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg');
         }
         
         document.getElementById("next").onclick = function() {
 
-            var curr_date = ddt1.getDate();
+            var curr_date = ddt1.getDate()-1;
             var curr_month = ddt1.getMonth()+1;
             var curr_year = ddt1.getFullYear();
             if(curr_date<10){curr_date='0'+curr_date};
@@ -331,7 +327,7 @@
             observerLayer.setDateInterval(ddt1, ddt2);
             observerDailyClustersLayer.setDateInterval(ddt1, ddt2);
             updateInfo();
-            MODIS.setUrl('http://{s}.sat.owm.io/sql/{z}/{x}/{y}?select=b1,b4,b3&from=modis&order=last&color=modis&APPID=2a99c97edae3fe4c3f8b227d6329708c&where=day:' + time);
+            MODIS.setUrl('https://map1a.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_CorrectedReflectance_TrueColor/default/' + time + '/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg');
         }
     });
 

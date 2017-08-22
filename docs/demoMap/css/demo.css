@@ -13,7 +13,7 @@ html, body, #map {
             box-shadow: 0 1px 7px rgba(0,0,0,0.65);
         }
 
-.controls2 {
+.controls_date {
 
 			position: absolute;
 			left: 50px;
@@ -26,16 +26,28 @@ html, body, #map {
     		padding: 5px;
 }
         
-.controls2 button {
-
-            font-size:11px;
-            cursor:pointer;
-            
-        }
         
 .controls > div{
-            padding: 6px;
+            padding: 4px;
         }
+
+.prev_button {
+
+	background:url(../img/left-arrow.png) no-repeat 5px 0;
+	width: 18px;
+	height: 23px;
+	background-size: 12px 23px; 
+	cursor: pointer;
+}
+
+.next_button {
+
+	background:url(../img/right-arrow.png) no-repeat;
+	width: 18px;
+	height: 23px;
+	background-size: 12px 23px;
+	cursor: pointer;
+}
 
 .global_map {
 	position: absolute;
