@@ -57,9 +57,9 @@
             providers['2'] = {
               title: 'Map',
               icon: '../img/layers-vector.png',
-              layer: L.tileLayer('http://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+              layer: L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                   maxZoom: 18,
-                  attribution: '&copy; <a href="http://www.carto.com/">Carto</a>'
+                  attribution: '&copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a>'
               })
           }
 
