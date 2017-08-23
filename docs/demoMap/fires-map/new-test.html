@@ -41,7 +41,7 @@
 
             var providers = {};
 
-            providers['1'] = {
+            providers['2'] = {
               title: 'Satellite',
               icon: '../img/layers-satellite.png',
               /*layer: L.tileLayer('http://{s}.sat.owm.io/sql/{z}/{x}/{y}?select=b1,b4,b3&from=modis&order=last&color=modis&APPID=2a99c97edae3fe4c3f8b227d6329708c&where=day:' + time, {
@@ -54,7 +54,7 @@
               })
           };
 
-            providers['2'] = {
+            providers['1'] = {
               title: 'Map',
               icon: '../img/layers-vector.png',
               layer: L.tileLayer('http://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
@@ -363,7 +363,6 @@
             position: 'topright',
             maxLayersInRow: 5
         });
-    //shortcutLayers.extend();
     shortcutLayers.addTo(map);
 
 </script>
