@@ -14,6 +14,7 @@
 
     <link rel="stylesheet" href="../css/demo.css" />
 
+    <script src="../js/irk_reg.js"></script>
 
 
 	<script src="fires/Fires.js"></script>
@@ -83,6 +84,7 @@
 
 
 <script>
+    
     var map = new L.Map('map', {
         layers: [],
         //crs: L.CRS.EPSG3395,
@@ -92,12 +94,15 @@
         scrollWheelZoom: true,
         zoom: 4
     }); 
+
+    //Layers
     
     var MODIS = L.tileLayer('https://map1a.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_CorrectedReflectance_TrueColor/default/' + time + '/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg', {
                   maxZoom: 13,
                   attribution: '&copy; <a href="http://owm.io">Openweathermap</a>'
               });  
     var Wind = L.tileLayer( "http://{s}.maps.owm.io/map/wind_new/{z}/{x}/{y}?appid=b1b15e88fa797225412429c1c50c122a1");
+    
     var Population = L.tileLayer.wms('https://geoservice.dlr.de/eoc/land/wms?', {
     layers: 'GUF28_DLR_v1_Mosaic',
     transparent: true,
@@ -107,8 +112,14 @@
     
     var Borders = L.tileLayer("http://{s}.maps.owm.io:8099/599c2397ca91e20001b13a68/{z}/{x}/{y}?hash=834dcebedb1e32738226439252599ac6");
 
- 
-
+    var myStyle = {
+        "color": "#0026ff",
+        "weight": 5,
+        "fill": false,
+        "opacity": 0.5
+    }
+    
+    geojson = L.geoJson(irk_reg, {style: myStyle}).addTo(map);
 
 
 
@@ -221,7 +232,6 @@
     }
     var clusterGeomLayer = L.gmx.createLayer(layerInfo1)
         .addTo(map);
-
 
 
     L.gmx.loadLayers([
