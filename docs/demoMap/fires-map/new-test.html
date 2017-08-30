@@ -143,6 +143,8 @@
                   attribution: '&copy; <a href="https://carto.com/attribution">CARTO</a>'
               });
 
+    var LayersControl = L.control.layers().addTo(map);
+
     L.gmx.loadLayers([
             {mapID: '96578B650B9E42308D7830D64D993FF6', layerID: '3BEC5D23E6E2431AA61DC89F3D4F0FA9'}
         ]).then(function(news) {
@@ -154,12 +156,6 @@
 
     var popMap = L.layerGroup([Population_Base, Population, Labels]);
     var satellite = L.layerGroup([BaseSatellite, Terra, Borders, Labels_dark]);
-
-
-
-
-    
-    var LayersControl = L.control.layers().addTo(map);
     
     
         var updateInfo = function() {
