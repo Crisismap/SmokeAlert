@@ -105,11 +105,18 @@
               });  */
     
     var Basemap = L.tileLayer('http://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
-                  maxZoom: 18,
+                  maxZoom: 17,
                   attribution: '&copy; <a href="http://www.carto.com/">Carto</a>'
               });
 
-    var Wind = L.tileLayer( "http://{s}.maps.owm.io/map/wind_new/{z}/{x}/{y}?appid=b1b15e88fa797225412429c1c50c122a1");
+    var BaseSatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                  maxZoom: 15,
+                  attribution: '&copy; <a href="http://www.arcgis.com/">ESRI</a>'
+              });
+
+    var Wind = L.tileLayer("http://{s}.maps.owm.io/map/wind_new/{z}/{x}/{y}?appid=b1b15e88fa797225412429c1c50c122a1", {
+                attribution: '&copy; Openweathermap',
+    });
     
     var Population = L.tileLayer.wms('https://geoservice.dlr.de/eoc/land/wms?', {
     layers: 'GUF28_DLR_v1_Mosaic',
@@ -117,16 +124,36 @@
     format: 'image/png',
     styles: 'guf_8bit',
     attribution: '&copy; DLR GUF'});
+
+    var Population_Base = L.tileLayer('http://tile.casa.ucl.ac.uk/duncan/WorldPopDen2015/{z}/{x}/{y}.png', {
+            maxZoom: 11,
+            attribution: '&copy; EU Global Human Settlement'
+            
+    });
     
     var Borders = L.tileLayer("http://{s}.maps.owm.io:8099/58c8f11e73e9ac0001bbf8ac/{z}/{x}/{y}?hash=a3959fae3279f3cdafe12ebf0532c449");
 
-    var Labels = L.tileLayer('http://{s}.tile.cart.kosmosnimki.ru/kosmohyb-en/{z}/{x}/{y}.png', {
+    var Labels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_only_labels/{z}/{x}/{y}@2x.png', {
                   maxZoom: 18,
-                  attribution: '&copy; <a href="http://kosmosnimki.ru/">Kosmosnimki</a>'
+                  attribution: '&copy; <a href="https://carto.com/attribution">CARTO</a>'
               });
 
-    var popMap = L.layerGroup([Basemap, Population]);
-    var satellite = L.layerGroup([Terra, Borders, Labels]);
+    var Labels_dark = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_only_labels/{z}/{x}/{y}@2x.png', {
+                  maxZoom: 18,
+                  attribution: '&copy; <a href="https://carto.com/attribution">CARTO</a>'
+              });
+
+    L.gmx.loadLayers([
+            {mapID: '96578B650B9E42308D7830D64D993FF6', layerID: '3BEC5D23E6E2431AA61DC89F3D4F0FA9'}
+        ]).then(function(news) {
+            news.setDateInterval(ddt1, ddt2);
+            news.addTo(map);
+        });
+
+
+    var popMap = L.layerGroup([Population_Base, Population, Labels]);
+    var satellite = L.layerGroup([BaseSatellite, Terra, Borders, Labels_dark]);
+
 
 
 
@@ -208,11 +235,6 @@
         }
     };
     
-    /*LayersControl.addOverlay(MODIS, "MODIS");
-    LayersControl.addOverlay(Wind, "Wind");
-    LayersControl.addOverlay(Population, "Population");
-    LayersControl.addOverlay(Borders, "Borders");
-    LayersControl.addOverlay(Labels, "Labels");*/
 
     var clusterLayer = L.gmx.createLayer(layerInfo);
     LayersControl.addOverlay(clusterLayer, layerInfo.properties.title);
@@ -237,9 +259,10 @@
             }]
         }
     }
-    var clusterGeomLayer = L.gmx.createLayer(layerInfo1)
-        .addTo(map);
+    
+    var clusterGeomLayer = L.gmx.createLayer(layerInfo1).addTo(map);
 
+    clusterLayer.addTo(map);
 
 
     L.gmx.loadLayers([
@@ -263,7 +286,10 @@
             dateInterval: [ddt1, ddt2],
             callback: updateClustersByObject(clusterGeomLayer, true, 'ClusterID', _params.hotspotIDAttr, null, _params.hotspotTimeAttr, hotspotLayer)
         });
-        var chkZoom = function() {
+
+
+
+        /*var chkZoom = function() {
             var zoom = map._zoom;
             if (zoom < _params.minGeomZoom) {
                 if (!clusterLayer._map) {
@@ -305,13 +331,11 @@
             observerDailyClustersLayer.setBounds(clusterLayer._map ? bbox : outBbox);
         };
         map.on('moveend', updateBbox);
-        updateBbox();
+        updateBbox();*/
 
+        //var newsLayer = L.gmx.createLayer(news);
         
-        //Date_controls
-
-        document.getElementById("prev").onclick = function() {
-
+        //Date_controls           
             var curr_date = ddt1.getDate();
             var curr_month = ddt1.getMonth()+1;
             var curr_year = ddt1.getFullYear();
@@ -319,11 +343,16 @@
             if(curr_month<10){curr_month='0'+curr_month};
             var time = (curr_year + "-" + curr_month + "-" + curr_date);
 
+        document.getElementById("prev").onclick = function() {
+
+ 
+
             ddt1 = new Date(ddt1.getTime() - period);
             ddt2 = new Date(ddt2.getTime() - period);
             hotspotLayer.setDateInterval(ddt1, ddt2);
             dailyLayer.setDateInterval(ddt1, ddt2);
             observerLayer.setDateInterval(ddt1, ddt2);
+            //newsLayer.setDateInterval(ddt1, ddt2);
             observerDailyClustersLayer.setDateInterval(ddt1, ddt2);
             updateInfo();
             Terra.setUrl('https://map1a.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_CorrectedReflectance_TrueColor/default/' + time + '/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg');
@@ -332,18 +361,13 @@
         
         document.getElementById("next").onclick = function() {
 
-            var curr_date = ddt1.getDate();
-            var curr_month = ddt1.getMonth()+1;
-            var curr_year = ddt1.getFullYear();
-            if(curr_date<10){curr_date='0'+curr_date};
-            if(curr_month<10){curr_month='0'+curr_month};
-            var time = (curr_year + "-" + curr_month + "-" + curr_date);
 
             ddt1 = new Date(ddt1.getTime() + period);
             ddt2 = new Date(ddt2.getTime() + period);
             hotspotLayer.setDateInterval(ddt1, ddt2);
             dailyLayer.setDateInterval(ddt1, ddt2);
             observerLayer.setDateInterval(ddt1, ddt2);
+            //newsLayer.setDateInterval(ddt1, ddt2);
             observerDailyClustersLayer.setDateInterval(ddt1, ddt2);
             updateInfo();
             Terra.setUrl('https://map1a.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_CorrectedReflectance_TrueColor/default/' + time + '/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg');
