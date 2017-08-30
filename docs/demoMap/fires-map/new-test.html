@@ -148,6 +148,7 @@
         ]).then(function(news) {
             news.setDateInterval(ddt1, ddt2);
             news.addTo(map);
+			LayersControl.addOverlay(news, 'Новости');
         });
 
 
