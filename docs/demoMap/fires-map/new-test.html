@@ -148,6 +148,7 @@
     L.gmx.loadLayers([
             {mapID: '96578B650B9E42308D7830D64D993FF6', layerID: '3BEC5D23E6E2431AA61DC89F3D4F0FA9'}
         ]).then(function(news) {
+            news.bindClusters();
             news.setDateInterval(ddt1, ddt2);
             news.addTo(map);
 			LayersControl.addOverlay(news, 'Новости');
