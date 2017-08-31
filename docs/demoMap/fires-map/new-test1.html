@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<script src="spatial_query.js"></script>
+
+    <link rel="stylesheet" href="../../geomixer/geomixer.css" />
+    <script src="../../geomixer/geomixer-src.js"></script>
+    
+    <script src="../build/iconLayer.js"></script>
+    <link rel="stylesheet" href="../css/iconLayers.css" />
+
+    <link rel="stylesheet" href="../css/demo.css" />
+
+	<script src="fires/Fires.js"></script>
+
+
+	<title>Demo map Fires New</title>
+</head>
+
+<body>
+	<div id="map"></div>
+	<div class="controls_date" style="padding:5px;">
+		<div style="display:inline-flex; ">
+            <div id="prev" class="prev_button"></div>
+                <span class="timeInfo" style="padding: 4px 8px 0 12px"></span><span class="timeInfo2" style="padding: 4px 12px 0 8px"></span>
+            <div id="next" class="next_button"></div>
+        </div>
+	</div>
+
+<script>
+    var map = new L.Map('map', {
+        layers: [],
+        //crs: L.CRS.EPSG3395,
+        center: new L.LatLng(52.09, 59.29),
+        attributionControl: true,
+        zoomControl: true,
+        scrollWheelZoom: true,
+        zoom: 4
+    }); 
+    var LayersControl = L.control.layers().addTo(map);
+
+	var startDate = new Date,
+		oneDay = 1000*60*60*24,
+		period = oneDay * 1,
+		now = startDate.getTime(),
+		ddt1 = new Date( now - now % oneDay), 		//beginning of the previous UTC day
+		ddt2 = new Date(ddt1.getTime() + period),	//beginning of the current UTC day
+		time = null,
+		terra = L.tileLayer('//map1a.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_CorrectedReflectance_TrueColor/default/{time}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg', { maxZoom: 13, time: '', attribution: '&copy; <a href="https://earthdata.nasa.gov/worldview">NASA</a>' }),
+		controlsCont = document.getElementsByClassName('controls_date')[0],
+		buttons = {
+			timeInfo: controlsCont.getElementsByClassName('timeInfo')[0],
+			timeInfo2: controlsCont.getElementsByClassName('timeInfo2')[0],
+			prev: controlsCont.getElementsByClassName('prev_button')[0],
+			next: controlsCont.getElementsByClassName('next_button')[0]
+		},
+		temporalLayers = [],
+		observers = [],
+		outBbox = L.gmxUtil.bounds([[0, -91], [0, -91]]),
+		updateBbox = function() {
+			var screenBounds = map.getBounds(),
+				p1 = screenBounds.getNorthWest(),
+				p2 = screenBounds.getSouthEast(),
+				bbox = L.gmxUtil.bounds([[p1.lng, p1.lat], [p2.lng, p2.lat]]),
+				zoom = map._zoom;
+			if (observers.length) { observers[0].setBounds(fires.clusterGeomLayer._map ? bbox : outBbox); }
+			if (observers.length > 1) { observers[1].setBounds(fires.clusterLayer._map ? bbox : outBbox); }
+		},
+        updateInfo = function() {
+
+			var curr_date = ddt1.getDate() - 1;
+			var curr_month = ddt1.getMonth() + 1;
+			var curr_year = ddt1.getFullYear();
+			if(curr_date<10){curr_date='0'+curr_date};
+			if(curr_month<10){curr_month='0'+curr_month};
+			time = (curr_year + "-" + curr_month + "-" + curr_date);
+			terra.options.time = time;
+
+			var zz = function(x) { return x < 10 ? "0" + x : x};
+            buttons.timeInfo.innerHTML = zz(ddt1.getUTCFullYear()) + '.' + zz(ddt1.getUTCMonth() + 1) + '.' + zz(ddt1.getUTCDate());
+            buttons.timeInfo2.innerHTML = zz(ddt2.getUTCFullYear()) + '.' + zz(ddt2.getUTCMonth() + 1) + '.' + zz(ddt2.getUTCDate());
+		},
+		fires = {
+			_params: {
+				minGeomZoom: 8,
+				minHotspotZoom: 11,
+				hotspotLayerName: 'C13B4D9706F7491EBC6DC70DFFA988C0',
+				dailyLayerName: '3E88643A8AC94AFAB4FD44941220B1CE',
+				hotspotTimeAttr: 'Timestamp',
+				hotspotIDAttr: 'SpotID',
+				clusterTimeAttr: 'ClusterDate',
+				totalPower: 'TotalPower',
+				mapName: 'NDFYK'
+			},
+			clusterLayer: null,
+			clusterGeomLayer: null,
+			createFireLayers: function() {
+				buildModisPixelDimensionsTable();
+
+				var layerInfo = {
+					properties: {
+						//type: 'Vector',
+						title: 'FireClusters',
+						name: 'fireClustersLayer' + fires._params.hotspotLayerName,
+						attributes: ['scale', 'count', 'label', 'startDate', 'endDate', 'dateRange', 'isIndustrial'],
+						styles: [{
+							Filter: '"isIndustrial"=0',
+							//Balloon: _gtxt('firesWidget.LayerClusterBalloon'),
+							MinZoom: 1,
+							MaxZoom: fires._params.minGeomZoom - 1,
+							RenderStyle: {
+								fill: {
+									radialGradient: {
+										r1: 0,
+										r2: '[scale]*20',
+										addColorStop: [
+											[0, 0xffff00, 50],
+											[1, 0xff0000, 50]
+										]
+									}
+								},
+								label: {
+									size: 12,
+									color: 0x333,
+									field: 'label',
+									align: 'center'
+								}
+							}
+						},
+						{
+							Filter: '"isIndustrial"=1',
+							//Balloon: _gtxt('firesWidget.LayerClusterBalloonIndustrial'),
+							MinZoom: 1,
+							MaxZoom: fires._params.minGeomZoom - 1,
+							RenderStyle: {
+								fill: {
+									radialGradient: {
+										r1: 0,
+										r2: '[scale]*20',
+										addColorStop: [
+											[0, 0xffffff, 80],
+											[1, 0xffaa00, 80]
+										]
+									}
+								}
+							}
+						}]
+					}
+				};
+				
+
+				fires.clusterLayer = L.gmx.createLayer(layerInfo).addTo(map);
+				LayersControl.addOverlay(fires.clusterLayer, layerInfo.properties.title);
+
+				fires.clusterGeomLayer = L.gmx.createLayer({
+					properties: {
+						type: 'Vector',
+						title: 'FirePolygons',
+						name: 'fireClustersGeomLayer' + fires._params.dailyLayerName,
+						attributes: ['scale', 'count', 'label', 'startDate', 'endDate', 'dateRange', 'isIndustrial'],
+						styles: [{
+							MinZoom: fires._params.minGeomZoom,
+							MaxZoom: 21,
+							RenderStyle: {
+								outline: { color: 0xff0000, thickness: 2 }, 
+								fill:    { color: 0xff0000, opacity: 15 }
+							},
+							HoverStyle: {
+								outline: { color: 0xff0000, thickness: 3 }, 
+								fill:    { color: 0xff0000, opacity: 45 }
+							}
+						}]
+					}
+				}).addTo(map);
+				// clusterLayer.addTo(map);
+			}
+		};
+	fires.createFireLayers();
+
+    //BaseLayers
+    new L.Control.IconLayers([
+        {
+            title: 'World',
+            layer: L.layerGroup([
+				L.tileLayer('//tile.casa.ucl.ac.uk/duncan/WorldPopDen2015/{z}/{x}/{y}.png', {
+					maxZoom: 11,
+					attribution: '&copy; EU Global Human Settlement'
+				}),
+				L.tileLayer.wms('//geoservice.dlr.de/eoc/land/wms?', {
+					layers: 'GUF28_DLR_v1_Mosaic',
+					transparent: true,
+					format: 'image/png',
+					styles: 'guf_8bit',
+					attribution: '&copy; DLR GUF'
+				}),
+				L.tileLayer('//cartodb-basemaps-{s}.global.ssl.fastly.net/light_only_labels/{z}/{x}/{y}@2x.png', { maxZoom: 18, attribution: '&copy; <a href="https://carto.com/attribution">CARTO</a>' })
+			]),
+            icon: '../img/layers-world.png'
+        },
+        {
+            title: 'Satellite',
+            layer: L.layerGroup([
+				L.tileLayer('//server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 15, attribution: '&copy; <a href="http://www.arcgis.com/">ESRI</a>' }),
+				terra,
+				L.tileLayer("//{s}.maps.owm.io:8099/58c8f11e73e9ac0001bbf8ac/{z}/{x}/{y}?hash=a3959fae3279f3cdafe12ebf0532c449"),
+				L.tileLayer('//cartodb-basemaps-{s}.global.ssl.fastly.net/dark_only_labels/{z}/{x}/{y}@2x.png', { maxZoom: 18, attribution: '&copy; <a href="https://carto.com/attribution">CARTO</a>' })
+			]),
+            icon: '../img/layers-modis.png'
+        }], 
+        {
+            position: 'bottomleft',
+            maxLayersInRow: 5
+        }).addTo(map);
+
+	map.on('moveend', updateBbox);
+	updateBbox();
+	updateInfo();
+
+    L.gmx.loadLayers([
+        {mapID: fires._params.mapName, layerID: fires._params.hotspotLayerName}
+        ,
+        {mapID: fires._params.mapName, layerID: fires._params.dailyLayerName}
+		,
+		{mapID: '96578B650B9E42308D7830D64D993FF6', layerID: '3BEC5D23E6E2431AA61DC89F3D4F0FA9'}
+    ]).then(function(hotspotLayer, dailyLayer, news) {
+		temporalLayers.push(hotspotLayer, dailyLayer, news);
+
+        hotspotLayer.setDateInterval(ddt1, ddt2);
+        dailyLayer.setDateInterval(ddt1, ddt2);
+		news.setDateInterval(ddt1, ddt2);
+		news.bindClusters();
+		LayersControl.addOverlay(news, 'Новости');
+		news.addTo(map);
+
+        observers.push(
+			dailyLayer.addObserver({
+				type: 'update',
+				dateInterval: [ddt1, ddt2],
+				callback: updateClustersByObject(fires.clusterLayer, false, 'ParentClusterId', 'ClusterId', 'HotSpotCount', fires._params.clusterTimeAttr, dailyLayer)
+			}),
+			hotspotLayer.addObserver({
+				type: 'update',
+				dateInterval: [ddt1, ddt2],
+				callback: updateClustersByObject(fires.clusterGeomLayer, true, 'ClusterID', fires._params.hotspotIDAttr, null, fires._params.hotspotTimeAttr, hotspotLayer)
+			})
+		);
+    });
+
+	var setDateIntervals = function() {
+		temporalLayers.forEach(function(it) { it.setDateInterval(ddt1, ddt2); }.bind(this));
+		observers.forEach(function(it) { it.setDateInterval(ddt1, ddt2); }.bind(this));
+		terra.setUrl('//map1a.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_CorrectedReflectance_TrueColor/default/' + time + '/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg');
+		updateInfo();
+	};
+	L.DomEvent
+		.on(buttons.prev, 'click', function (ev) {
+            ddt1 = new Date(ddt1.getTime() - period);
+            ddt2 = new Date(ddt2.getTime() - period);
+			setDateIntervals();
+		}, this)
+		.on(buttons.next, 'click', function (ev) {
+            ddt1 = new Date(ddt1.getTime() + period);
+            ddt2 = new Date(ddt2.getTime() + period);
+			setDateIntervals();
+		}, this);
+
+</script>
+
+</body>
+</html>
