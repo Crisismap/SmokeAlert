@@ -32,7 +32,7 @@
     var map = new L.Map('map', {
         layers: [],
         //crs: L.CRS.EPSG3395,
-        center: new L.LatLng(52.09, 59.29),
+        center: new L.LatLng(38.09, 42.29),
         attributionControl: true,
         zoomControl: true,
         scrollWheelZoom: true,
@@ -230,7 +230,7 @@
         dailyLayer.setDateInterval(ddt1, ddt2);
 		news.setDateInterval(ddt1, ddt2);
 		news.bindClusters();
-		LayersControl.addOverlay(news, 'Новости');
+		LayersControl.addOverlay(news, 'News');
 		news.addTo(map);
 
         observers.push(
