@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="../css/iconLayers.css" />
 
     <link rel="stylesheet" href="../css/demo.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 
 	<script src="fires/Fires.js"></script>
 
@@ -20,12 +22,19 @@
 
 <body>
 	<div id="map"></div>
-	<div class="controls_date" style="padding:5px;">
+	<div id="controls_date" class="controls_date">
 		<div style="display:inline-flex; ">
             <div id="prev" class="prev_button"></div>
                 <span class="timeInfo" style="padding: 4px 8px 0 12px"></span><span class="timeInfo2" style="padding: 4px 12px 0 8px"></span>
             <div id="next" class="next_button"></div>
         </div>
+	</div>
+	<div class="legend_news">
+		<table><tr>
+			<td><img src="https://images.kosmosnimki.ru/fires/news_red.png"/></td><td>War and refugees</td>
+			<td><img src="https://images.kosmosnimki.ru/fires/news_orange.png"/></td><td>Natural disasters</td>
+			<td><img src="https://images.kosmosnimki.ru/fires/news_grey.png"/></td><td>Environment and ecology</td>
+		</tr></table>
 	</div>
 
 <script>

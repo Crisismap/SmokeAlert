@@ -22,8 +22,28 @@ html, body, #map {
 			background-color: #ffffff;
 			border-radius: 5px;
             box-shadow: 0 1px 7px rgba(0,0,0,0.65);
+            font: 400 13.5px/1.3 Open Sans,Arial,sans-serif;
+    		padding: 4px 0 1px 0;
+}
+
+.legend_news {
+			position: absolute;
+			width: 376px;
+			right: 10px;
+			bottom: 25px;
+			z-index: 1000;
+			background-color: #ffffff;
+			border-radius: 5px;
+            box-shadow: 0 1px 7px rgba(0,0,0,0.65);
             font: 400 14px/1.3 Open Sans,Arial,sans-serif;
     		padding: 5px;
+    		font-family: 'Source Sans Pro', sans-serif;
+    		font-size: 10px;
+}
+
+.legend_news img{
+	width: 13px;
+	margin:3px 4px 0 10px;
 }
         
         
@@ -33,19 +53,19 @@ html, body, #map {
 
 .prev_button {
 
-	background:url(../img/left-arrow.png) no-repeat 5px 0;
-	width: 18px;
-	height: 23px;
-	background-size: 12px 23px; 
+	background:url(../img/left_arrow1.png) no-repeat 5px 0;
+	width: 25px;
+	height: 25px;
+	background-size: 24px 24px; 
 	cursor: pointer;
 }
 
 .next_button {
 
-	background:url(../img/right-arrow.png) no-repeat;
-	width: 18px;
-	height: 23px;
-	background-size: 12px 23px;
+	background:url(../img/right_arrow1.png) no-repeat;
+	width: 25px;
+	height: 25px;
+	background-size: 24px 24px;
 	cursor: pointer;
 }
 
@@ -67,4 +87,38 @@ html, body, #map {
 }
 .leaflet-control-layers-separator {
 	margin:0;
+}
+
+
+/*CUSTOM MARKEERS*/
+
+.leaflet-marker-pane .marker-cluster-small {
+  background-color: rgba(255, 226, 163, 0.62);
+}
+
+.leaflet-marker-pane .marker-cluster-small div {
+  background-color: rgba(246, 174, 92, 0.58);
+}
+
+.leaflet-marker-pane .marker-cluster-medium {
+  background-color: rgba(241, 171, 87, 0.56);
+}
+
+.marker-cluster-medium div {
+  background-color: rgba(253, 150, 48, 0.53);
+}
+
+.marker-cluster-large {
+  background-color: rgba(247, 125, 74, 0.85);
+}
+
+.marker-cluster-large div {
+  background-color: rgb(245, 142, 96);
+}
+
+.marker-circled {
+  border: 3px solid hsla(0, 50%, 50%, 0.75);
+  border-radius: 30px;
+  width: 20px;
+  height: 20px;
 }
