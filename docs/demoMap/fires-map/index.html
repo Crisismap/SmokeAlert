@@ -11,6 +11,7 @@
     
     <script src="../build/iconLayer.js"></script>
     <link rel="stylesheet" href="../css/iconLayers.css" />
+    <link rel="stylesheet" href="../../geomixer/geomixer.css" />
 
     <link rel="stylesheet" href="../css/demo.css" />
 
@@ -66,14 +67,15 @@
 
 <body>
 	<div id="map"></div>
-    <div id="controls" class="controls_date" style="padding:5px;">
-        <div>
-            <button id="prev">&lt;&lt;</button>
-                <span id="timeInfo"></span> - <span id="timeInfo2"></span>
-            <button id="next">&gt;&gt;</button>
+
+
+    <div id="controls" class="controls_date">
+        <div style="display:inline-flex; ">
+            <div id="prev" class="prev_button"></div>
+                <span id="timeInfo" style="padding: 4px 8px 0 12px"></span><span id="timeInfo2" style="padding: 4px 12px 0 8px"></span>
+            <div id="next" class="next_button"></div>
         </div>
     </div>
-
 
 
 <script>
@@ -98,8 +100,9 @@
     attribution: '&copy; DLR GUF'}).addTo(map);
 
     Wind.addTo(map);
+
     
-    var LayersControl = L.control.layers({Wind}, {Population}, {collapsed: false}).addTo(map);
+    var LayersControl = L.control.layers({Wind}, {Population}, {collapsed: true}).addTo(map);
     
     
         var updateInfo = function() {

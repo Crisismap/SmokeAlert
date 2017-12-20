@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>AREALL - Публичная карта</title>
+    <link href="/favicon.ico" rel="shortcut icon">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	
+	<link rel="stylesheet" href="http://www.kosmosnimki.ru/lib/geomixer/geomixer.css" />
+	<script src="http://www.kosmosnimki.ru/lib/geomixer/geomixer-src.js?key=U92596WMIH"></script>
+
+	<style>
+		html, body, #map {
+			height: 100%;
+			margin: 0px;
+		}
+	</style>
+	
+	
+
+</head>
+<body>
+	<div id="map"></div>
+
+		<script>
+        
+		var map = L.map( 'map' ).setView( [ 55.986718992633515, 37.37493896484376 ], 7 );
+		var osm = L.tileLayer( "http://{s}.tile.osm.org/{z}/{x}/{y}.png", 
+		{
+			maxZoom: 18
+        } ).addTo( map );
+
+        var styleIDS = {
+            color: 0x00FFFF,
+            fillColor: 0x0000FF
+        };
+        var ids = {
+            1: styleIDS,
+            45: {
+                color: 0x00FFFF,
+                fillOpacity: 0.9
+            },
+            2: {
+                color: 0x00EEFF,
+                fillOpacity: 0.9
+            },
+            3: {
+                color: 0x00FF00,
+                fillOpacity: 0.9
+            },
+            4: {
+                color: 0x00FF00,
+                fillOpacity: 0.9
+            },
+            5: {
+                color: 0x00FFFF,
+                fillOpacity: 0.9
+            },
+            29: {
+                fillPattern: {                  // fill.pattern
+                    style: 'diagonal1'          // могут быть заданны строки (horizontal, vertical, diagonal1, diagonal2, circle, cross) (по умолчанию: 'horizontal')
+                    ,colors: [0x00FFFF, 0xFF0000]    // массив цветов в формате UInt|Expression (по умолчанию: [])
+                }
+                ,fillOpacity: 0.3
+            }
+        };
+
+		// Подгружаем и отображаем слои
+		// Градостроительные зоны
+		var zones = L.gmx.loadLayer( 'R38TA', '33DB7C6F70274FB2825F5F0CA665D3B2' )
+		.then( function( color_attr )
+		{
+			// Перехватываем применение стиля объекта
+			color_attr.setStyleHook( function( map_object )
+			{
+				// Пытаемся изменить цвет рамки и цвет закраски
+				return ids[map_object.id];
+			} );
+	
+			// Прицепляем слой к карте
+			color_attr.addTo( map );
+		} );
+
+	</script>
+</body>
+</html>

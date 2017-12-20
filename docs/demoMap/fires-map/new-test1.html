@@ -159,7 +159,7 @@
 				};
 				
 
-				fires.clusterLayer = L.gmx.createLayer(layerInfo).addTo(map);
+				fires.clusterLayer = L.gmx.createLayer(layerInfo);
 				LayersControl.addOverlay(fires.clusterLayer, layerInfo.properties.title);
 
 				fires.clusterGeomLayer = L.gmx.createLayer({
@@ -181,7 +181,7 @@
 							}
 						}]
 					}
-				}).addTo(map);
+				});
 				// clusterLayer.addTo(map);
 			}
 		};
