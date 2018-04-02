@@ -90,6 +90,24 @@ html, body, #map {
 }
 
 
+/*Headers*/
+
+.title_map{
+    text-shadow: 0 5px 15px rgba(26,26,27,.92);
+    color: #2d2b2b;
+    font-family: "Source Sans Pro", Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 3em;
+    line-height: 1.2;
+    margin: 80px auto;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    z-index: 1111;
+    z-index: 1111;
+}
+
 /*CUSTOM MARKEERS*/
 
 .leaflet-marker-pane .marker-cluster-small {
