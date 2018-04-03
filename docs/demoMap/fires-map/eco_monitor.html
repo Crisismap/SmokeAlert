@@ -17,11 +17,15 @@
 	
 
 
-	<title>Demo map Ecology</title>
+	<title>Demo map - Ecology Landfill confrontation Moscow region</title>
 </head>
 
 <body>
-		<div class="title_map">Мусорные бунты Подмосковья</div>
+	<div class="title_map">Мусорные бунты Подмосковья</div>
+	<div class="legend">
+		<div class="leg1"></div>
+		<div class="leg2"></div>
+	</div>
 	<div id="map"></div>
 	<div id="controls_date" class="controls_date">
 		<div style="display:inline-flex; ">
@@ -58,12 +62,14 @@
         L.gmx.loadLayers([
             //{mapID: '1D30C72D02914C5FB90D1D448159CAB6', layerID: 'C9458F2DCB754CEEACC54216C7D1EB0A'},
 			{mapID: 'ED63F94E015B402684AC0C7AD2DEDED8', layerID: '535B6107967442AEAE705D7FA23D85BD'},
+			{mapID: 'ED63F94E015B402684AC0C7AD2DEDED8', layerID: '83BEF7F680374DC59EAA44E8518A8226'},
             {mapID: 'ED63F94E015B402684AC0C7AD2DEDED8', layerID: '8AAD13BFD26E48C78DB22242AF7A3BBC'},
-            {mapID: 'ED63F94E015B402684AC0C7AD2DEDED8', layerID: '66583812E539452E9A4C0BC68609DD66'}
-        ]).then(function(region, landfill, news) {
+            {mapID: 'ED63F94E015B402684AC0C7AD2DEDED8', layerID: '84DE4DF19EFF47B3884606B6D2142708'}
+        ]).then(function(region, stat, landfill, news) {
             news.setDateInterval(ddt1, ddt2);
             news.addTo(map);
             region.addTo(map);
+            stat.addTo(map);
             landfill.addTo(map);
             
             L.control.layers({
