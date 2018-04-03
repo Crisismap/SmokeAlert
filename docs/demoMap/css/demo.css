@@ -108,6 +108,9 @@ html, body, #map {
     z-index: 1111;
 }
 
+
+
+
 /*CUSTOM MARKEERS*/
 
 .leaflet-marker-pane .marker-cluster-small {
@@ -140,3 +143,4 @@ html, body, #map {
   width: 20px;
   height: 20px;
 }
+.leaflet-control-layers leaflet-control-layers-expanded leaflet-control {font-size: 22px}
