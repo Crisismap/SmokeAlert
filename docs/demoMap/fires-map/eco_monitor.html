@@ -21,7 +21,7 @@
 </head>
 
 <body>
-		<div class="title_map">Карта мусорных бунтов (прототип)</div>
+		<div class="title_map">Мусорные бунты Подмосковья</div>
 	<div id="map"></div>
 	<div id="controls_date" class="controls_date">
 		<div style="display:inline-flex; ">
@@ -33,32 +33,12 @@
 
 
 
-	<!--<div id="controls">
-        <div id="title">NASA MODIS Imagery</div>
-        <div>
-            <button id="prev">Prev day</button>
-            <button id="next">Next day</button>
-            <span id="timeInfo"></span>
-        </div>
-        <!--<div>
-            <button id="dayFilter">Day flybys</button>
-            <button id="nightFilter">Night flybys</button>
-            <button id="noneFilter">All flybys</button>
-        </div>
-    </div>-->
-	<!--<div class="legend_news">
-		<table><tr>
-			<td><img src="https://images.kosmosnimki.ru/fires/news_red.png"/></td><td>War and refugees</td>
-			<td><img src="https://images.kosmosnimki.ru/fires/news_orange.png"/></td><td>Natural disasters</td>
-			<td><img src="https://images.kosmosnimki.ru/fires/news_grey.png"/></td><td>Environment and ecology</td>
-		</tr></table>
-	</div>-->
 	   <script>
         var map = L.map('map').setView([55.75, 37.61], 9);
 
         var osm = L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}.png ', {
             maxZoom: 18,
-            attribution: 'Openstreetmap, Stamen'
+            attribution: 'Openstreetmap, Stamen', '<a href="http://kosmosnimki.ru">Kosmosnimki.Ru</a>'
         }).addTo(map);
         
         var startDate = new Date;
