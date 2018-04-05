@@ -4,6 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<script src="spatial_query.js"></script>
 
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
     <link rel="stylesheet" href="../../geomixer/geomixer.css" />
     <script src="../../geomixer/geomixer-src.js"></script>
     
@@ -11,11 +12,41 @@
     <link rel="stylesheet" href="../css/iconLayers.css" />
 
     <link rel="stylesheet" href="../css/demo.css" />
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0px;
+        }
+		
+        #controls {
+            position: absolute;
+			left: 10px;
+			top: 97px;
+			z-index: 1;
+			background-color: #ffffff;
+			padding: 13px 15px 13px 13px;
+			border-radius: 5px;
+            box-shadow: 0 1px 7px rgba(0,0,0,0.65);
+        }
+        
+        #title {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+		
+		#slider {
+			width: 300px;
+		}
+		#timeInfo {
+			text-align: center;
+			padding-top: 12px;
+		}
+    </style>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
 
-	
-
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
 	<title>Demo map - Ecology Landfill confrontation Moscow region</title>
 </head>
@@ -26,16 +57,12 @@
 		<div class="leg1"></div>
 		<div class="leg2"></div>
 	</div>
-	<div id="map"></div>
-	<div id="controls_date" class="controls_date">
-		<div style="display:inline-flex; ">
-            <div id="prev" class="prev_button"></div>
-                <span id="timeInfo" style="padding: 4px 8px 0 12px"></span><span class="timeInfo2" style="padding: 4px 12px 0 8px"></span>
-            <div id="next" class="next_button"></div>
-        </div>
+	<div id="controls">
+        <div id="title"></div>
+		<div id="slider"></div>
+		<div id="timeInfo">Loading data...</div>
 	</div>
-
-
+	<div id="map"></div>
 
 	   <script>
         var map = L.map('map').setView([55.75, 37.61], 9);
@@ -44,7 +71,19 @@
             maxZoom: 18,
             attribution: 'Openstreetmap, Stamen, <a href="http://kosmosnimki.ru">Kosmosnimki.Ru</a>'
         }).addTo(map);
-        
+		
+		var updateInfo = function(currentDate) {
+			var zz = function(x) { return x < 10 ? "0" + x : x}
+			var dateStr = zz(currentDate.getUTCDate()) + '.' + zz(currentDate.getUTCMonth() + 1) + '.' + zz(currentDate.getUTCFullYear());
+			document.getElementById('timeInfo').innerHTML = dateStr;
+		}
+		
+		var startDate = new Date(),
+            oneDay = 1000*60*60*24,	// milliseconds in one day
+            now = startDate.getTime(),
+            ddt2 = new Date( now - now % oneDay), //beginning of the UTC day
+            ddt1 = new Date(ddt2.getTime() - 20*oneDay);
+/*
         var startDate = new Date();
         var oneDay = 1000*60*60*24,    // milliseconds in one day
             now = startDate.getTime(),
@@ -58,7 +97,7 @@
         }
         
         updateInfo(ddt1);
-        
+*/
         L.gmx.loadLayers([
             //{mapID: '1D30C72D02914C5FB90D1D448159CAB6', layerID: 'C9458F2DCB754CEEACC54216C7D1EB0A'},
 			{mapID: 'ED63F94E015B402684AC0C7AD2DEDED8', layerID: '535B6107967442AEAE705D7FA23D85BD'},
@@ -81,6 +120,18 @@
            news.bindClusters();
             
             //controls
+			updateInfo(new Date(ddt2.valueOf()));
+			$('#slider').slider({
+				min: ddt1.valueOf() + oneDay,
+				max: ddt2.valueOf(),
+				step: oneDay,
+				value: ddt2.valueOf(),
+				slide: function(event, ui) {
+					updateInfo(new Date(ui.value));
+					news.setDateInterval(new Date(ui.value), new Date(ui.value + oneDay));
+				}
+			});
+/*
             document.getElementById("prev").onclick = function() {
                 ddt1 = new Date(ddt1.getTime() - oneDay);
                 ddt2 = new Date(ddt2.getTime() - oneDay);
@@ -95,7 +146,7 @@
                 updateInfo(ddt1);
             }
             
-            /*var IsDayIndex = modisLayer._gmx.tileAttributeIndexes.IsDay;
+            var IsDayIndex = modisLayer._gmx.tileAttributeIndexes.IsDay;
             document.getElementById("dayFilter").onclick = function() {
                 modisLayer.setFilter(function(item) {
                     return item.properties[IsDayIndex];
