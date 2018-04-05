@@ -22,7 +22,7 @@
             bottom: 10px;
             z-index: 1001;
             background-color: #ffffff;
-            padding: 8px 15px 7px 13px;
+            padding: 21px 15px 17px 13px;
             border-radius: 5px;
             box-shadow: 0 1px 7px rgba(0,0,0,0.65);
         }
@@ -94,7 +94,7 @@
             oneDay = 1000*60*60*24,	// milliseconds in one day
             now = startDate.getTime(),
             ddt2 = new Date( now - now % oneDay), //beginning of the UTC day
-            ddt1 = new Date(ddt2.getTime() - 20*oneDay);
+            ddt1 = new Date(ddt2.getTime() - 60*oneDay);
 
 		L.gmx.loadMap('ED63F94E015B402684AC0C7AD2DEDED8', {leafletMap: map}).then(function(gmxMap) {
 			var news = gmxMap.layersByID['84DE4DF19EFF47B3884606B6D2142708'],
