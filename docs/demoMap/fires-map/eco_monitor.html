@@ -2,11 +2,10 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<script src="spatial_query.js"></script>
 
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-    <link rel="stylesheet" href="../../geomixer/geomixer.css" />
-    <script src="../../geomixer/geomixer-src.js"></script>
+    <link rel="stylesheet" href="../../geomixer13/geomixer.css" />
+    <script src="../../geomixer13/geomixer-src.js"></script>
     
     <script src="../build/iconLayer.js"></script>
     <link rel="stylesheet" href="../css/iconLayers.css" />
@@ -22,7 +21,7 @@
             position: absolute;
 			left: 10px;
 			top: 97px;
-			z-index: 1;
+			z-index: 1001;
 			background-color: #ffffff;
 			padding: 13px 15px 13px 13px;
 			border-radius: 5px;
@@ -40,6 +39,20 @@
 		#timeInfo {
 			text-align: center;
 			padding-top: 12px;
+		}
+		.legend {
+			top: 35px;
+			right: 307px;
+			z-index: 1111;
+		}
+		.title_map {
+			z-index: 401;
+		}
+		.leg1 {
+			background-color: red;
+		}
+		.leg2 {
+			background-color: #7a0010;
 		}
     </style>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -83,41 +96,20 @@
             now = startDate.getTime(),
             ddt2 = new Date( now - now % oneDay), //beginning of the UTC day
             ddt1 = new Date(ddt2.getTime() - 20*oneDay);
-/*
-        var startDate = new Date();
-        var oneDay = 1000*60*60*24,    // milliseconds in one day
-            now = startDate.getTime(),
-            ddt1 = new Date( now - now % oneDay + oneDay), //beginning of the previous UTC day
-            ddt2 = new Date(ddt1.getTime() + oneDay); //beginning of the current UTC day
 
-        var updateInfo = function(currentDate) {
-            var zz = function(x) { return x < 10 ? "0" + x : x}
-            var dateStr = zz(currentDate.getUTCDate()) + '.' + zz(currentDate.getUTCMonth() + 1) + '.' + zz(currentDate.getUTCFullYear());
-            document.getElementById('timeInfo').innerHTML = dateStr;
-        }
-        
-        updateInfo(ddt1);
-*/
-        L.gmx.loadLayers([
-            //{mapID: '1D30C72D02914C5FB90D1D448159CAB6', layerID: 'C9458F2DCB754CEEACC54216C7D1EB0A'},
-			{mapID: 'ED63F94E015B402684AC0C7AD2DEDED8', layerID: '535B6107967442AEAE705D7FA23D85BD'},
-			{mapID: 'ED63F94E015B402684AC0C7AD2DEDED8', layerID: '83BEF7F680374DC59EAA44E8518A8226'},
-            {mapID: 'ED63F94E015B402684AC0C7AD2DEDED8', layerID: '8AAD13BFD26E48C78DB22242AF7A3BBC'},
-            {mapID: 'ED63F94E015B402684AC0C7AD2DEDED8', layerID: '84DE4DF19EFF47B3884606B6D2142708'}
-        ]).then(function(region, stat, landfill, news) {
-            news.setDateInterval(ddt1, ddt2);
-            news.addTo(map);
-            region.addTo(map);
-            stat.addTo(map);
-            landfill.addTo(map);
-            
-            L.control.layers({
-            }, {
-                "Новости": news,
-                "Полигоны ТБО": landfill
-           }, {collapsed: false}).addTo(map);
+		L.gmx.loadMap('ED63F94E015B402684AC0C7AD2DEDED8', {leafletMap: map}).then(function(gmxMap) {
+			var news = gmxMap.layersByID['84DE4DF19EFF47B3884606B6D2142708'],
+				landfill = gmxMap.layersByID['8AAD13BFD26E48C78DB22242AF7A3BBC'],
+				overlays = {
+				};
+			overlays[news.getGmxProperties().title] = news;
+			overlays[landfill.getGmxProperties().title] = landfill;
+//console.log(news, landfill)
+			news.setDateInterval(ddt1, ddt2);
 
-           news.bindClusters();
+            L.control.layers({}, overlays, {collapsed: false}).addTo(map);
+
+           //news.bindClusters();
             
             //controls
 			updateInfo(new Date(ddt2.valueOf()));
@@ -131,37 +123,6 @@
 					news.setDateInterval(new Date(ui.value), new Date(ui.value + oneDay));
 				}
 			});
-/*
-            document.getElementById("prev").onclick = function() {
-                ddt1 = new Date(ddt1.getTime() - oneDay);
-                ddt2 = new Date(ddt2.getTime() - oneDay);
-                news.setDateInterval(ddt1, ddt2);
-                updateInfo(ddt1);
-            }
-            
-            document.getElementById("next").onclick = function() {
-                ddt1 = new Date(ddt1.getTime() + oneDay);
-                ddt2 = new Date(ddt2.getTime() + oneDay);
-                news.setDateInterval(ddt1, ddt2);
-                updateInfo(ddt1);
-            }
-            
-            var IsDayIndex = modisLayer._gmx.tileAttributeIndexes.IsDay;
-            document.getElementById("dayFilter").onclick = function() {
-                modisLayer.setFilter(function(item) {
-                    return item.properties[IsDayIndex];
-                });
-            }
-            
-            document.getElementById("nightFilter").onclick = function() {
-                modisLayer.setFilter(function(item) {
-                    return !item.properties[IsDayIndex];
-                });
-            }
-            
-            document.getElementById("noneFilter").onclick = function() {
-                modisLayer.setFilter(null);
-            }*/
         })
     </script>
 
